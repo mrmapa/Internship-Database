@@ -1,2 +1,1 @@
-print("hallo")
-print("FUCK GITHUB")
+print("okay i think i got it to work")
