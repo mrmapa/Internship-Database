@@ -7,6 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 import pandas as pd
 import os
 
+#test
 def load_indeed_jobs_div(job_title, location):
     getVars = {'q' : job_title, 'l' : location, 'fromage' : 'last', 'sort' : 'date'}
     url = ('https://www.indeed.com/jobs?' + urllib.parse.urlencode(getVars))
