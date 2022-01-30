@@ -1,11 +1,6 @@
-import urllib
 import requests
 from bs4 import BeautifulSoup
-import selenium
-from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
 import pandas as pd
-import os
 def loadL3HarrisJobs(searchTerm): # loads web data from L3Harris website given searchTerm
     url = ("https://careers.l3harris.com/search-jobs/" + searchTerm + "/")
     page = requests.get(url)
