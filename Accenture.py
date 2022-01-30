@@ -12,12 +12,11 @@ def loadAccentureJobs(searchTerm, driver): # extracts jobInfo from Accenture web
     jobSearchBox.send_keys(searchTerm)
     jobSearchBox.click()
     jobSearchBox.send_keys(Keys.ENTER)
-    driver.implicitly_wait(10)
     """
+    driver.implicitly_wait(10)
     pageSource = driver.page_source
     soup = BeautifulSoup(pageSource, "html.parser")
     jobSoup = soup.find(class_="upper-set-jobs job-listing-block col-xs-12")
-    print(jobSoup)
     return jobSoup
 def extractJobTitleAccenture(jobElem): # extracts job title from web data
     titleElem = jobElem.find('h3', class_="job-title module-title corporate-bold")

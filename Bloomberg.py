@@ -1,17 +1,9 @@
 from bs4 import BeautifulSoup
-import selenium
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 import pandas as pd
 driver = webdriver.Chrome(r"C:\Users\mrmap\PycharmProjects\Internship-Database\chromedriver.exe")
 def loadBloombergJobs(searchTerm, driver): # extracts jobInfo from Bloomberg website through webdriver
     driver.get('https://careers.bloomberg.com/job/search?qf=' + searchTerm)
-    """
-    jobSearchBox = driver.find_element_by_id("search-text-input")
-    jobSearchBox.send_keys(searchTerm)
-    jobSearchBox.click()
-    jobSearchBox.send_keys(Keys.ENTER)
-    """
     driver.implicitly_wait(10)
     pageSource = driver.page_source
     soup = BeautifulSoup(pageSource, "html.parser")
