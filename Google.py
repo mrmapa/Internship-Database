@@ -10,14 +10,17 @@ def loadGoogleJobs(searchTerm, driver): # extracts web data from Google Careers 
     jobSoup = soup.find(id="search-results")
     return jobSoup
 def extractJobTitleGoogle(jobElem): # extracts job title from web data
-    titleElem = jobElem.find('h2', class_="gc-card__title gc-heading gc-heading--beta")
+    print(jobElem)
+    print("*****")
+    titleElem = jobElem.find(class_="gc-card__title gc-heading gc-heading--beta")
+    print(titleElem)
     title = titleElem.text.strip()
     return title
-def extractJobLocationGoogle(jobElem): # extracts job date from web data
+def extractJobLocationGoogle(jobElem): # extracts job location from web data
     locationElem = jobElem.find(class_="gc-job-tags__location")
     location = locationElem.text.strip()
     return location
-def extractJobDateGoogle(jobElem):
+def extractJobDateGoogle(jobElem): # extracts job date from web data
     dateElem = jobElem.find(itemprop="datePosted")
     date = dateElem.text.strip()
     return date
