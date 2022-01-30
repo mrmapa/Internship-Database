@@ -1,12 +1,8 @@
-import urllib
-import requests
 from bs4 import BeautifulSoup
 import selenium
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
 import pandas as pd
-import os
 driver = webdriver.Chrome(r"C:\Users\mrmap\PycharmProjects\Internship-Database\chromedriver.exe")
 def loadAccentureJobs(searchTerm, driver): # extracts jobInfo from Accenture website through webdriver
     driver.get('https://www.accenture.com/us-en/careers/jobsearch')
