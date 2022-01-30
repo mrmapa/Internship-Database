@@ -1,33 +1,70 @@
-import urllib
-import requests
 from bs4 import BeautifulSoup
+from selenium import webdriver
 import pandas as pd
-import os
-
-def loadGoogleJobs(searchTerm): # loads web data from Google Careers website given searchTerm
-    url = "https://careers.google.com/jobs/results/?distance=50&hl=en_US&jlo=en_US&q=" + searchTerm
-    page = requests.get(url)
-    soup = BeautifulSoup(page.content, "html.parser")
-    jobSoup = soup.find('ol', id="search-results")
-    print(jobSoup)
+driver = webdriver.Chrome(r"C:\Users\mrmap\PycharmProjects\Internship-Database\chromedriver.exe")
+def loadGoogleJobs(searchTerm, driver): # extracts web data from Google Careers website through webdriver
+    driver.get('https://careers.google.com/jobs/results/?distance=50&q=' + searchTerm)
+    driver.implicitly_wait(10)
+    pageSource = driver.page_source
+    soup = BeautifulSoup(pageSource, "html.parser")
+    jobSoup = soup.find(id="search-results")
     return jobSoup
-loadGoogleJobs("summer intern")
-""""
-def extract_job_title_google(job_elem):
-    title_elem = job_elem.find('h2', class_ = 'gc-card__title gc-heading gc-heading--beta')
-    title = title_elem.text.strip()
+def extractJobTitleGoogle(jobElem): # extracts job title from web data
+    titleElem = jobElem.find('h2', class_="gc-card__title gc-heading gc-heading--beta")
+    title = titleElem.text.strip()
     return title
-
-def extract_company_google(job_elem):
-    company_elem = job_elem.find('span', class_ = 'gc-icon')
-    company = company_elem.text.strip()
-    return company
-
-def extract_link_google(job_elem):
-    link = job_elem.find('a')['href']
-    link = '/jobs/results/126403584381067974-research-intern-ms-summer-2022/?distance=50&q=summer%202022' + link
+def extractJobLocationGoogle(jobElem): # extracts job date from web data
+    locationElem = jobElem.find(class_="gc-job-tags__location")
+    location = locationElem.text.strip()
+    return location
+def extractJobDateGoogle(jobElem):
+    dateElem = jobElem.find(itemprop="datePosted")
+    date = dateElem.text.strip()
+    return date
+def extractJobLinkGoogle(jobElem): # extracts job link from web data
+    link = "careers.google.com" + jobElem.find('a')['href']
     return link
-
-def extract_date_google(job_elem):
-    date_elem = job_elem.find('span', class_= 'gc-card')
-"""""
+def saveJobsToExcel(jobsList, filename): # update based on what format we want
+    jobs = pd.DataFrame(jobsList)
+    jobs.to_excel(filename)
+def findJobsFrom(website, searchTerm, desiredCharacs, filename="GoogleJobs.xlsx"): # loads Google website, extracts data and saves it
+    if website == 'Google':
+        jobSoup = loadGoogleJobs(searchTerm, driver)
+        jobsList, numListings = extractJobInformationGoogle(jobSoup, desiredCharacs)
+        saveJobsToExcel(jobsList, filename)
+        print('{} new job postings retrieved. Stored in {}.'.format(numListings, filename))
+def extractJobInformationGoogle(jobSoup, desiredCharacs): # extracts data by searching for desired information per job
+    jobElems = jobSoup.find_all('li')
+    cols = []  # creates columns array
+    extractedInfo = []  # creates array of info
+    if 'titles' in desiredCharacs: # if titles in desired characs, creates title array
+        titles = []
+        cols.append('Titles')
+        for jobElem in jobElems:
+            titles.append(extractJobTitleGoogle(jobElem))
+        extractedInfo.append(titles)
+    if 'locations' in desiredCharacs: # if locations in desired characs, creates locations array
+        locations = []
+        cols.append('Locations')
+        for jobElem in jobElems:
+            locations.append(extractJobLocationGoogle(jobElem))
+        extractedInfo.append(locations)
+    if 'dates' in desiredCharacs: # if dates in desired characs, creates dates array
+        dates = []
+        cols.append('Dates')
+        for jobElem in jobElems:
+            dates.append(extractJobDateGoogle(jobElem))
+        extractedInfo.append(dates)
+    if 'links' in desiredCharacs: # if links in desired characs, creates links array
+        links = []
+        cols.append('Links')
+        for jobElem in jobElems:
+            links.append(extractJobLinkGoogle(jobElem))
+        extractedInfo.append(links)
+    jobsList = {}
+    for j in range(len(cols)):
+        jobsList[cols[j]] = extractedInfo[j]
+    numListings = len(extractedInfo[0])
+    return jobsList, numListings
+desiredCharacs = ['titles', 'locations', 'dates', 'links']
+findJobsFrom('Google', 'data science intern', desiredCharacs)
