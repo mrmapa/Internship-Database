@@ -14,6 +14,7 @@ def load_indeed_jobs_div(job_title, location):
     page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
     job_soup = soup.find(id="resultsCol")
+    print(job_soup)
     return job_soup
 
 def extract_job_title_indeed(job_elem):
@@ -86,9 +87,7 @@ def extract_job_information_indeed(job_soup, desired_characs):
         jobs_list[cols[j]] = extracted_info[j]
 
     num_listings = len(extracted_info[0])
-
     return jobs_list, num_listings
-    print('{} new job postings retrieved. Stored in {}.'.format(num_listings, filename))
 
 desired_characs = ['titles', 'companies', 'links', 'date_listed']
 find_jobs_from('Indeed', 'data science intern', 'United States', desired_characs)
