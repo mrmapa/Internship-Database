@@ -35,6 +35,11 @@ def extractJobInformationMeta(jobSoup, desiredCharacs): # extracts data by searc
     jobElems = jobSoup.find_all(class_="_8sef")
     cols = []  # creates columns array
     extractedInfo = []  # creates array of info
+    company = []
+    cols.append('Company')
+    for jobElem in jobElems:
+        company.append("Meta")
+    extractedInfo.append(company)
     if 'titles' in desiredCharacs:  # if titles in desired characs, creates title array
         titles = []
         cols.append('Titles')

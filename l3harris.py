@@ -29,12 +29,17 @@ def saveJobsToExcel(jobsList, filename): # saves job data to excel spreadsheet
 def findJobsFrom(website, searchTerm, desiredCharacs, filename="test.xlsx"): # finds jobs given website, searchterm, desiredCharacs, and filename
     if website == 'L3Harris':
         jobSoup = loadL3HarrisJobs(searchTerm)
-        jobsList, numListings = extractJobInformationL3Harris(jobSoup, desiredCharacs)
+        jobsList = extractJobInformationL3Harris(jobSoup, desiredCharacs)
         saveJobsToExcel(jobsList, filename)
 def extractJobInformationL3Harris(jobSoup, desiredCharacs): # extracts jobInfo from the L3Harris website
     jobElems = jobSoup.find_all('li')
     cols = []
     extractedInfo = []
+    company = []
+    cols.append('Company')
+    for jobElem in jobElems:
+        company.append("L3Harris")
+    extractedInfo.append(company)
     if 'titles' in desiredCharacs: # creates Titles column and appends to extractedInfo
         titles = []
         cols.append('Titles')
@@ -62,8 +67,7 @@ def extractJobInformationL3Harris(jobSoup, desiredCharacs): # extracts jobInfo f
     jobsList = {}
     for j in range(len(cols)):
         jobsList[cols[j]] = extractedInfo[j] # copies extractedInfo to jobsList so it can be returned
-    numListings = len(extractedInfo[0])
-    return jobsList, numListings
-    print('{} new job postings retrieved. Stored in {}.'.format(numListings, filename))
+    return jobsList
+    print('{} new job postings retrieved. Stored in {}.'.format(filename))
 desiredCharacs = ['titles', 'locations', 'links', 'dates']
 findJobsFrom('L3Harris', 'intern', desiredCharacs)

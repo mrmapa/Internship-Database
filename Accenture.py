@@ -1,12 +1,13 @@
 from bs4 import BeautifulSoup
 import selenium
+import urllib
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 import pandas as pd
 driver = webdriver.Chrome(r"C:\Users\mrmap\PycharmProjects\Internship-Database\chromedriver.exe")
 def loadAccentureJobs(searchTerm, driver): # extracts jobInfo from Accenture website through webdriver
-    driver.get('https://www.accenture.com/us-en/careers/jobsearch?jk=' + searchTerm)
+    driver.get("https://www.accenture.com/us-en/careers/jobsearch?jk=")
     """
     jobSearchBox = driver.find_element_by_id("job-search-hero-bar")
     jobSearchBox.send_keys(searchTerm)
@@ -46,6 +47,11 @@ def extractJobInformationAccenture(jobSoup, desiredCharacs): # extracts data by 
     jobElems = jobSoup.find_all(class_="module job-card-wrapper col-md-4 col-xs-12 col-sm-6 corporate-regular background-white")
     cols = [] # creates array of columns
     extractedInfo = [] # creates array of info
+    company = []
+    cols.append('Company')
+    for jobElem in jobElems:
+        company.append("Accenture")
+    extractedInfo.append(company)
     if 'titles' in desiredCharacs: # if titles in desired characs, creates title array and appends it to cols array, appends title data to info array
         titles = []
         cols.append('Titles')

@@ -45,6 +45,11 @@ def extractJobInformationBloomberg(jobSoup, desiredCharacs): # extracts data by 
     jobElems = jobSoup.find_all(class_="job-results-section")
     cols = [] # creates columns array
     extractedInfo = [] # creates array of info
+    company = []
+    cols.append('Company')
+    for jobElem in jobElems:
+        company.append("Bloomberg")
+    extractedInfo.append(company)
     if 'titles' in desiredCharacs: # if titles in desired characs, creates title array
         titles = []
         cols.append('Titles')
