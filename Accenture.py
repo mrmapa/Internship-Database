@@ -2,15 +2,20 @@ from bs4 import BeautifulSoup
 import selenium
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
 import pandas as pd
 driver = webdriver.Chrome(r"C:\Users\mrmap\PycharmProjects\Internship-Database\chromedriver.exe")
 def loadAccentureJobs(searchTerm, driver): # extracts jobInfo from Accenture website through webdriver
     driver.get('https://www.accenture.com/us-en/careers/jobsearch')
     jobSearchBox = driver.find_element_by_id("job-search-hero-bar")
     jobSearchBox.send_keys(searchTerm)
+    searchButton = driver.find_element_by_class_name(class_="btn-primary col-xs-12")
+    searchButton.click()
+    """
     jobSearchBox.click()
     jobSearchBox.send_keys(Keys.ENTER)
-    driver.implicitly_wait(5)
+    """
+    driver.implicitly_wait(10)
     pageSource = driver.page_source
     soup = BeautifulSoup(pageSource, "html.parser")
     jobSoup = soup.find(class_="upper-set-jobs job-listing-block col-xs-12")
