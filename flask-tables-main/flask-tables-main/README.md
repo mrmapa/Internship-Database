@@ -1,3 +1,8 @@
+^^ use basic table
+
+
+
+
 # flask-tables
 Beautiful interactive tables in your Flask templates
 
