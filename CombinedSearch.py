@@ -2,36 +2,68 @@ from bs4 import BeautifulSoup
 import requests
 from selenium import webdriver
 import pandas as pd
-driver = webdriver.Chrome(r"C:\Users\mrmap\PycharmProjects\Internship-Database\chromedriver.exe")
+from selenium.webdriver.chrome.options import Options
+options = Options()
+# Performing without GUI
+options.headless = True
+options.add_argument("--window-size=1920,1200")
+# Accepting downloads without GUI
+options.add_experimental_option("prefs", {
+  "download.default_directory": r"/Users/marcosantos/Downloads",
+  "download.prompt_for_download": False,
+  "download.directory_upgrade": True,
+  "safebrowsing_for_trusted_sources_enabled": False,
+  "safebrowsing.enabled": False
+})
+driver = webdriver.Chrome(r"C:\Users\mrmap\PycharmProjects\Internship-Database\chromedriver.exe", options=options)
 
 ########## Accenture-Specific Functions ##########
 
 def loadAccentureJobs(searchTerm, driver): # extracts jobInfo from Accenture website through webdriver
-    driver.get("https://www.accenture.com/us-en/careers/jobsearch?jk=" + searchTerm)
-    driver.implicitly_wait(10)
-    pageSource = driver.page_source
-    soup = BeautifulSoup(pageSource, "html.parser")
-    jobSoup = soup.find(class_="upper-set-jobs job-listing-block col-xs-12")
-    return jobSoup
+    try:
+        driver.get("https://www.accenture.com/us-en/careers/jobsearch?jk=" + searchTerm)
+        driver.implicitly_wait(10)
+        pageSource = driver.page_source
+        soup = BeautifulSoup(pageSource, "html.parser")
+        jobSoup = soup.find(class_="upper-set-jobs job-listing-block col-xs-12")
+        return jobSoup
+    except AttributeError as err:
+        print("Attribute Error: ".format(err))
 
 def extractJobTitleAccenture(jobElem): # extracts job title from web data
-    titleElem = jobElem.find('h3', class_="job-title module-title corporate-bold")
-    title = titleElem.text.strip()
-    return title
+    try:
+        titleElem = jobElem.find('h3', class_="job-title module-title corporate-bold")
+        title = titleElem.text.strip()
+        return title
+    except AttributeError as err:
+        print("Attribute Error: ".format(err))
+        return "N/A"
 
 def extractJobLocationAccenture(jobElem): # extracts job location from web data
-    locationElem = jobElem.find('p', class_="small ucase job-location")
-    location = locationElem.text.strip()
-    return location
+    try:
+        locationElem = jobElem.find('p', class_="small ucase job-location")
+        location = locationElem.text.strip()
+        return location
+    except AttributeError as err:
+        print("Attribute Error: ".format(err))
+        return "N/A"
 
 def extractJobDateAccenture(jobElem): # extracts job posting date from web data
-    dateElem = jobElem.find('p', class_="posted-date small acn-italic")
-    date = dateElem.text.strip()
-    return date
+    try:
+        dateElem = jobElem.find('p', class_="posted-date small acn-italic")
+        date = dateElem.text.strip()
+        return date
+    except AttributeError as err:
+        print("Attribute Error: ".format(err))
+        return "N/A"
 
 def extractJobLinkAccenture(jobElem): # extracts link from web data
-    link = jobElem.find('a')['href']
-    return link
+    try:
+        link = jobElem.find('a')['href']
+        return link
+    except AttributeError as err:
+        print("Attribute Error: ".format(err))
+        return "N/A"
 
 def extractJobInformationAccenture(jobSoup, desiredCharacs): # extracts data by searching for desired information per job
     jobElems = jobSoup.find_all(class_="module job-card-wrapper col-md-4 col-xs-12 col-sm-6 corporate-regular background-white")
@@ -82,23 +114,39 @@ def loadBloombergJobs(searchTerm, driver): # extracts jobInfo from Bloomberg web
     return jobSoup
 
 def extractJobTitleBloomberg(jobElem): # extracts job title from web data
-    titleElem = jobElem.find(class_="job-results-name")
-    title = titleElem.text.strip()
-    return title
+    try:
+        titleElem = jobElem.find(class_="job-results-name")
+        title = titleElem.text.strip()
+        return title
+    except AttributeError as err:
+        print("Attribute Error: ".format(err))
+        return "N/A"
 
 def extractJobLocationBloomberg(jobElem): # extracts job location from web data
-    locationElem = jobElem.find(class_="job-results-city")
-    location = locationElem.text.strip()
-    return location
+    try:
+        locationElem = jobElem.find(class_="job-results-city")
+        location = locationElem.text.strip()
+        return location
+    except AttributeError as err:
+        print("Attribute Error: ".format(err))
+        return "N/A"
 
 def extractJobDateBloomberg(jobElem): # extracts job date from web date
-    dateElem = jobElem.find(class_="job-results-date")
-    date = dateElem.text.strip()
-    return date
+    try:
+        dateElem = jobElem.find(class_="job-results-date")
+        date = dateElem.text.strip()
+        return date
+    except AttributeError as err:
+        print("Attribute Error: ".format(err))
+        return "N/A"
 
 def extractJobLinkBloomberg(jobElem): # extracts job link from web data
-    link = "careers.bloomberg.com" + jobElem.find('a')['href']
-    return link
+    try:
+        link = "careers.bloomberg.com" + jobElem.find('a')['href']
+        return link
+    except AttributeError as err:
+        print("Attribute Error: ".format(err))
+        return "N/A"
 
 def extractJobInformationBloomberg(jobSoup, desiredCharacs): # extracts data by searching for desired information per job
     jobElems = jobSoup.find_all(class_="job-results-section")
@@ -148,24 +196,40 @@ def loadL3HarrisJobs(searchTerm): # loads web data from L3Harris website given s
     return jobSoup
 
 def extractTitleL3Harris(jobElem): # extracts job title from each job element
-    titleElem = jobElem.find('h2')
-    title = titleElem.text.strip()
-    return title
+    try:
+        titleElem = jobElem.find('h2')
+        title = titleElem.text.strip()
+        return title
+    except AttributeError as err:
+        print("Attribute Error: ".format(err))
+        return "N/A"
 
 def extractLocationL3Harris(jobElem): # extracts job location from each job element
-    locationElem = jobElem.find('span', class_="results-facet job-location")
-    location = locationElem.text.strip()
-    return location
+    try:
+        locationElem = jobElem.find('span', class_="results-facet job-location")
+        location = locationElem.text.strip()
+        return location
+    except AttributeError as err:
+        print("Attribute Error: ".format(err))
+        return "N/A"
 
 def extractLinkL3Harris(jobElem): # extracts job link from each job element
-    link = jobElem.find('a')['href']
-    link = "https://careers.l3harris.com/" + link
-    return link
+    try:
+        link = jobElem.find('a')['href']
+        link = "https://careers.l3harris.com/" + link
+        return link
+    except AttributeError as err:
+        print("Attribute Error: ".format(err))
+        return "N/A"
 
 def extractDateL3Harris(jobElem): # extracts job date from each job element
-    dateElem = jobElem.find('span', class_="results-facet job-date-posted")
-    date = dateElem.text.strip()
-    return date
+    try:
+        dateElem = jobElem.find('span', class_="results-facet job-date-posted")
+        date = dateElem.text.strip()
+        return date
+    except AttributeError as err:
+        print("Attribute Error: ".format(err))
+        return "N/A"
 
 def extractJobInformationL3Harris(jobSoup, desiredCharacs): # extracts jobInfo from the L3Harris website
     jobElems = jobSoup.find_all('li')
@@ -188,18 +252,18 @@ def extractJobInformationL3Harris(jobSoup, desiredCharacs): # extracts jobInfo f
         for jobElem in jobElems:
             locations.append(extractLocationL3Harris(jobElem))
         extractedInfo.append(locations)
-    if 'links' in desiredCharacs: # creates Links column and appends to extractedInfo
-        links = []
-        cols.append('Links')
-        for jobElem in jobElems:
-            links.append(extractLinkL3Harris(jobElem))
-        extractedInfo.append(links)
     if 'dates' in desiredCharacs: # creates Dates column and appends to extractedInfo
         dates = []
         cols.append('Date Listed')
         for jobElem in jobElems:
             dates.append(extractDateL3Harris(jobElem))
         extractedInfo.append(dates)
+    if 'links' in desiredCharacs: # creates Links column and appends to extractedInfo
+        links = []
+        cols.append('Links')
+        for jobElem in jobElems:
+            links.append(extractLinkL3Harris(jobElem))
+        extractedInfo.append(links)
     jobsList = {}
     for j in range(len(cols)):
         jobsList[cols[j]] = extractedInfo[j] # copies extractedInfo to jobsList so it can be returned
@@ -216,14 +280,22 @@ def loadMetaJobs(searchTerm, driver): # extracts jobInfo from Meta website throu
     return jobSoup
 
 def extractJobTitleMeta(jobElem): # extracts job title from web data
-    titleElem = jobElem.find(class_="_8sel _97fe")
-    title = titleElem.text.strip()
-    return title
+    try:
+        titleElem = jobElem.find(class_="_8sel _97fe")
+        title = titleElem.text.strip()
+        return title
+    except AttributeError as err:
+        print("Attribute Error: ".format(err))
+        return "N/A"
 
 def extractJobLocationMeta(jobElem): # extracts job location from web data
-    locationElem = jobElem.find(class_="_8see _97fe")
-    location = locationElem.text.strip()
-    return location
+    try:
+        locationElem = jobElem.find(class_="_8see _97fe")
+        location = locationElem.text.strip()
+        return location
+    except AttributeError as err:
+        print("Attribute Error: ".format(err))
+        return "N/A"
 
 def extractJobInformationMeta(jobSoup, desiredCharacs): # extracts data by searching for desired information per job
     jobElems = jobSoup.find_all(class_="_8sef")
@@ -274,22 +346,18 @@ def findJobsFrom(website, searchTerm, desiredCharacs, filename="Internships.xlsx
         jobSoup = loadAccentureJobs(searchTerm, driver)
         jobsList = extractJobInformationAccenture(jobSoup, desiredCharacs)
         saveJobsToExcel(jobsList, filename)
-        print('{} new job postings retrieved. Stored in {}.'.format(filename))
     if website == 'Bloomberg': # exclusively Bloomberg positions
         jobSoup = loadBloombergJobs(searchTerm, driver)
         jobsList = extractJobInformationBloomberg(jobSoup, desiredCharacs)
         saveJobsToExcel(jobsList, filename)
-        print('{} new job postings retrieved. Stored in {}.'.format(filename))
     if website == 'L3Harris': # exclusively L3Harris positions
         jobSoup = loadL3HarrisJobs(searchTerm)
         jobsList = extractJobInformationL3Harris(jobSoup, desiredCharacs)
         saveJobsToExcel(jobsList, filename)
-        print('{} new job postings retrieved. Stored in {}.'.format(filename))
     if website == 'Meta': # exclusively Meta positions
         jobSoup = loadMetaJobs(searchTerm, driver)
         jobsList = extractJobInformationMeta(jobSoup, desiredCharacs)
         saveJobsToExcel(jobsList, filename)
-        print('{} new job postings retrieved. Stored in {}.'.format(filename))
     else: # combined table with every company
         # Step 1: retrieve data for each
         jobSoupAccenture = loadAccentureJobs(searchTerm, driver)
@@ -316,4 +384,4 @@ def findJobsFrom(website, searchTerm, desiredCharacs, filename="Internships.xlsx
         combinedJobs.to_excel(filename)
 
 desiredCharacs = ['titles', 'locations', 'dates', 'links']
-findJobsFrom('Google', "summer intern", desiredCharacs)
+findJobsFrom('All', "banana", desiredCharacs)
