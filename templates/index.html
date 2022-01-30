@@ -10,16 +10,25 @@
 
 {% block body %}
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        .header{
+        body{
+            text-align: center;
+        }
+
+        .center{
+            transform: translateY(250%);
+        }
+
+        .header {
             color: white;
             text-align: center;
         }
 
-        .headingbackgroundcolor{
+        .headingbackgroundcolor {
             background-color: black;
         }
+
         .dropbtn {
             background-color: #0548c2;
             color: white;
@@ -37,8 +46,8 @@
             display: none;
             position: absolute;
             background-color: #f1f1f1;
-            min-width: 112px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            min-width: 127px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             z-index: 1;
         }
 
@@ -49,50 +58,45 @@
             display: block;
         }
 
-        .center {
-            margin: 0;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            -ms-transform: translate(-50%, -50%);
-            transform: translate(545%, 300%);
+        .dropdown-content a:hover {
+            background-color: #ddd;
         }
 
-        .dropdown-content a:hover {background-color: #ddd;}
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
 
-        .dropdown:hover .dropdown-content {display: block;}
-
-        .dropdown:hover .dropbtn {background-color: rgba(57, 115, 213, 0.98);}
+        .dropdown:hover .dropbtn {
+            background-color: rgba(57, 115, 213, 0.98);
+        }
     </style>
 </head>
 
 <body>
 <div class="headingbackgroundcolor">
-    <h2>  random text    </h2>
-<h1 class="header">Internship Opportunities</h1>
-<p class="header">Start your professional development today</p>
-    <h2>   just some random text to make a larger black area  </h2>
+    <h2> random text </h2>
+    <h1 class="header">Internship Opportunities</h1>
+    <p class="header">Start your professional development today</p>
+    <h2> just some random text to make a larger black area </h2>
 </div>
 <div class="dropdown">
     <div class="center">
-    <button class="dropbtn">Companies⯆</button>
-    <div class="dropdown-content">
-        <a href="#">All</a>
-        <a href="#">Accenture</a>
-        <a href="#">Bloomberg</a>
-        <a href="#">Google</a>
-        <a href="#">L3Harris</a>
-        <a href="#">Meta</a>
-    </div>
+        <button class="dropbtn">Companies⯆</button>
+        <div class="dropdown-content">
+            <a href="#">All</a>
+            <a href="#">Accenture</a>
+            <a href="#">Bloomberg</a>
+            <a href="#">L3Harris</a>
+            <a href="#">Meta</a>
+        </div>
     </div>
 
 </div>
 
-<form style="text-align: center">
+<form>
     <label for="jobtitle">Job Title:</label><br>
     <input type="text" id="jobtitle" name="jobtitle"><br>
 </form>
-
 </body>
 </html>
 {% endblock %}
