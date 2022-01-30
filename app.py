@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import CombinedSearch
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
@@ -17,6 +18,10 @@ class Todo(db.Model):
 @app.route('/')
 def index():  # put application's code here
     return render_template('index.html')
+def dynamic_page():
+    desiredCharacs = ['titles', 'locations', 'dates', 'links']
+    findJobsFrom('All', "banana", desiredCharacs)
+    return CombinedSearch.findJobsFrom()
 
 
 if __name__ == '__main__':

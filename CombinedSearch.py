@@ -382,6 +382,3 @@ def findJobsFrom(website, searchTerm, desiredCharacs, filename="Internships.xlsx
         combinedJobs = pd.concat([combinedJobs, jobsFrameL3])
         combinedJobs = pd.concat([combinedJobs, jobsFrameMeta])
         combinedJobs.to_excel(filename)
-
-desiredCharacs = ['titles', 'locations', 'dates', 'links']
-findJobsFrom('All', "banana", desiredCharacs)
